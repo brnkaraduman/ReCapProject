@@ -11,30 +11,14 @@ namespace ConsoleUI
 {
   public   class Program
     {
-        //static void Main(string[] args)
-        //{
-        //    CarManager carManager = new CarManager(new EfCarDal());
-
-        //    foreach (var car in carManager.GetCarsByBrandId(1))
-        //    {
-
-        //        Console.WriteLine(car.BrandId);
-        //    }
-        //}
-
+       
         static ICarService _carService = new CarManager(new EfCarDal());
-        static void Main(string[] args)
+      private static void Main(string[] args)
         {
-            GetAll();
-            Console.WriteLine(Environment.NewLine);
-            GetCarsByBrandId();
-            Console.WriteLine(Environment.NewLine);
-            GetCarsByColorId();
-            Console.WriteLine(Environment.NewLine);
             Add();
-            Console.ReadKey();
+           
         }
-        static void Add()
+        private static void Add()
         {
             try
             {
@@ -55,17 +39,17 @@ namespace ConsoleUI
             }
 
         }
-        static void GetCarsByBrandId()
+        private static void GetCarsByBrandId()
         {
-            List<CarDetailDto> cars = _carService.GetCarsByBrandId(_carService);
+            List<CarDetailDto> cars = (List<CarDetailDto>)_carService.GetCarsByBrandId(_carService);
             foreach (var car in cars)
             {
                 Console.WriteLine(car.BrandName+"/"+car.BrandId);
             }
         }
-        static void GetCarsByColorId()
+        private static void GetCarsByColorId()
         {
-            List<CarDetailDto> cars = _carService.GetCarsByColorId(_carService);
+            List<CarDetailDto> cars = (List<CarDetailDto>)_carService.GetCarsByColorId(_carService);
             foreach (var car in cars)
             {
                 Console.WriteLine(car.ColorId + "/" + car.ColorName);
@@ -73,9 +57,9 @@ namespace ConsoleUI
 
             }
         }
-        static void GetAll()
+        private static void GetAll()
         {
-            foreach (Car car in _carService.GetAll())
+            foreach (Car car in _carService.GetAll().Data)
             {
                 Console.WriteLine(car.BrandId + "/" + car.Description);
             }
