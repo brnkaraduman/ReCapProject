@@ -17,8 +17,8 @@ namespace Core.DataAccess.EntityFramework
             //IDisposiable Pattern implementation of C#
             using (TContext context = new TContext())
             {
-                var addedEntity = context.Entry(entity);
-                addedEntity.State = EntityState.Added;
+                var carToAdd = context.Entry(entity);
+                carToAdd.State = EntityState.Added;
                 context.SaveChanges();
             }
         }
@@ -27,8 +27,8 @@ namespace Core.DataAccess.EntityFramework
         {
             using (TContext context = new TContext())
             {
-                var deletedEntity = context.Entry(entity);
-                deletedEntity.State = EntityState.Deleted;
+                var carToDelete = context.Entry(entity);
+                carToDelete.State = EntityState.Deleted;
                 context.SaveChanges();
             }
         }
@@ -53,8 +53,8 @@ namespace Core.DataAccess.EntityFramework
         {
             using (TContext context = new TContext())
             {
-                var updatedEntity = context.Entry(entity);
-                updatedEntity.State = EntityState.Modified;
+                var carToUpdate = context.Entry(entity);
+                carToUpdate.State = EntityState.Modified;
                 context.SaveChanges();
             }
         }

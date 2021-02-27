@@ -1,5 +1,6 @@
 ﻿using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,18 +9,17 @@ using System.Text;
 
 namespace DataAccess.Concrete.InMemory
 {
-    public class InMemeoryCarDal : ICarDal
+    public class InMemoryCarDal : ICarDal
     {
         List<Car> _cars;
-        public InMemeoryCarDal()
+        public InMemoryCarDal()
         {
-            _cars = new List<Car>
-            {
-                new Car{ Id=1, BrandId=1, ColorId=1, ModelYear= new DateTime(2020), DailyPrice=150, Description="New"},
-                new Car{ Id=2, BrandId=2, ColorId=2, ModelYear= new DateTime(2021), DailyPrice=180, Description="Old"},
-                new Car{ Id=3, BrandId=2, ColorId=3, ModelYear= new DateTime(2020), DailyPrice=250, Description="New"},
-                new Car{ Id=4, BrandId=3, ColorId=3, ModelYear= new DateTime(2019), DailyPrice=200, Description="New"},
-                new Car{ Id=5, BrandId=1, ColorId=2, ModelYear= new DateTime(2019), DailyPrice=150, Description="Old"},
+            _cars = new List<Car> {
+                new Car{Id=1,BrandId=1,ColorId=1,ModelYear=2017,DailyPrice=150,Description="4X4 DİZEL MANUEL DACİA DUSTER ,BAKIMLI DÜŞÜK KM DE"},
+                new Car{Id=2,BrandId=2,ColorId=1,ModelYear=2019,DailyPrice=133,Description="KİRALIK SIFIR KM RENAULT SYMBOL"},
+                new Car{Id=3,BrandId=3,ColorId=2,ModelYear=2019,DailyPrice=750,Description="ŞÖFÖRLÜ ULTRA VİP MERCEDES VİTO SEVDİKLERİNİZİ ŞIMARTIN"},
+                new Car{Id=4,BrandId=2,ColorId=1,ModelYear=2012,DailyPrice=112,Description="112 TL YE GÜNLÜK KİRALIK RENAULT CLİO5 BENZİNLİ ADRESE TESLİM"},
+                new Car{Id=5,BrandId=3,ColorId=1,ModelYear=2015,DailyPrice=400,Description="*KİRALIK LÜX ARAÇLAR MERCEDES *C-180*2015 YENİ MODEL*FUL+FUL"},
 
             };
         }
@@ -30,43 +30,38 @@ namespace DataAccess.Concrete.InMemory
 
         public void Delete(Car car)
         {
-            Car cartoDelete = _cars.SingleOrDefault(c => c.Id == car.Id);
-
-            _cars.Remove(cartoDelete);
+            Car carToRemove = _cars.SingleOrDefault(c => c.Id == car.Id);
+            _cars.Remove(carToRemove);
         }
 
         public Car Get(Expression<Func<Car, bool>> filter)
         {
-            throw new NotImplementedException();
+            var expression = filter.Compile();
+            var car = _cars.SingleOrDefault(expression);
+            return car;
         }
 
-        public List<Car> GetAll()
-        {
-            return _cars;
-        }
 
         public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
         {
-            throw new NotImplementedException();
+            var expression = filter.Compile();
+            return filter == null ? _cars : _cars.Where(expression).ToList();
         }
 
-        public List<Car> GetAllId(int brandId)
+        public List<CarDetailDto> GetCarDetails()
         {
-            return _cars.Where(c => c.BrandId == brandId).ToList();
-        }
-
-        public List<Car> GetById(int brandId)
-        {
-            throw new NotImplementedException();
+            Console.WriteLine("InMemory' de SQL işlemleri yapılamaz.");
+            return null;
         }
 
         public void Update(Car car)
         {
-            Car CartoUpdate = _cars.SingleOrDefault(c => car.Id == car.Id);
-            CartoUpdate.ColorId = car.ColorId;
-            CartoUpdate.BrandId = car.BrandId;
-            CartoUpdate.DailyPrice = car.DailyPrice;
-            CartoUpdate.Description = car.Description;
+            Car carToUpdate = _cars.SingleOrDefault(c => c.Id == car.Id);
+            carToUpdate.BrandId = car.BrandId;
+            carToUpdate.ColorId = car.ColorId;
+            carToUpdate.DailyPrice = car.DailyPrice;
+            carToUpdate.Description = car.Description;
+            carToUpdate.ModelYear = car.ModelYear;
 
         }
     }
