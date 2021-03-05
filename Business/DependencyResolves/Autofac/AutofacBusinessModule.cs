@@ -17,6 +17,8 @@ namespace Business.DependencyResolves.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
+            // Singleton işlemleri burada yapılır
+
             builder.RegisterType<BrandManager>().As<IBrandService>().SingleInstance();
             builder.RegisterType<EfBrandDal>().As<IBrandDal>().SingleInstance();
 
@@ -41,7 +43,6 @@ namespace Business.DependencyResolves.Autofac
             builder.RegisterType<AuthManager>().As<IAuthService>();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 
-
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()
@@ -49,7 +50,6 @@ namespace Business.DependencyResolves.Autofac
                 {
                     Selector = new AspectInterceptorSelector()
                 }).SingleInstance();
-
         }
     }
 }
